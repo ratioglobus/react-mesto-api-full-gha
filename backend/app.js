@@ -1,6 +1,7 @@
 import express, { json } from 'express';
 import 'dotenv/config';
 import helmet from 'helmet';
+import cors from 'cors';
 import mongoose from 'mongoose';
 import router from './routes/index.js';
 
@@ -9,6 +10,7 @@ const BASE_URL_DB = 'mongodb://localhost:27017/mestodb';
 
 const app = express();
 app.use(helmet());
+app.use(cors());
 app.use(json());
 
 async function startApp() {

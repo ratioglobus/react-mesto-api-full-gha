@@ -1,0 +1,15 @@
+.form__caption {
+    margin: 15px auto 0;
+    padding: 0;
+    color: #fff;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-decoration: none;
+}
+
+.form__caption:hover {
+    opacity: 0.6;
+    cursor: pointer;
+}

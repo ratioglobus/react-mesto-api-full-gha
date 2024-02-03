@@ -9,6 +9,6 @@
 
 IP-адрес 62.84.127.187
 
-Frontend https://br.frontend.nomoredomainsmonster.ru/
+Frontend https://bladerunner.nomoredomainsmonster.ru/
 
-Backend https://br.backend.nomoredomainsmonster.ru/
+Backend https://api.bladerunner.nomoredomainsmonster.ru/
