@@ -1,0 +1,15 @@
+.elements__photo {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 282px;
+  display: block;
+  object-fit: cover;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  background-color: #423c3c;
+}
+
+.elements__photo:hover {
+  cursor: pointer;
+}
