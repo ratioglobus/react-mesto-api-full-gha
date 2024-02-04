@@ -1,5 +1,5 @@
 {
-  "homepage": "https://ratioglobus.github.io/",
+  "homepage": "https://bladerunner.nomoredomainsmonster.ru/",
   "name": "mesto-react",
   "private": false,
   "version": "0.0.0",
@@ -8,7 +8,7 @@
     "dev": "vite",
     "build": "vite build",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist",
+    "deploy": "npm run build && scp -r ./dist/* future-admin@62.84.127.187:/home/future-admin/future-admin/react-mesto-api-full-gha/frontend",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
