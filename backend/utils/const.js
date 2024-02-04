@@ -4,6 +4,7 @@ const allowedCors = [
   'http://bladerunner.nomoredomainsmonster.ru/',
   'https://bladerunner.nomoredomainsmonster.ru/',
   'localhost:3000',
+  'localhost:5173',
 ];
 
 export default { URLExp, allowedCors };

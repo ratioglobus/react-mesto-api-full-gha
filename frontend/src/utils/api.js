@@ -7,7 +7,7 @@ class Api {
     this._userUrl = `${this._url}/users/me`;
     this._cards = `${this._url}/cards`;
     this._likesUrl = `${this._url}/cards/likes`;
-  }; 
+  };
 
   _getResponse(res) {
     if (res.ok) {
@@ -15,6 +15,13 @@ class Api {
     }
     return Promise.reject(new Error(`${res.status}`));
   };
+
+  setAuthorizationHeader (jwt) {
+    this._headers = {
+      ...this._headers,
+      authorization: `Bearer ${jwt}`
+    }
+  }
 
   getUserData() {
     return fetch(this._userUrl, {

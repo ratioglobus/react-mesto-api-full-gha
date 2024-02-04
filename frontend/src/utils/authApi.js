@@ -1,5 +1,3 @@
-import { CONFIG } from './const';
-
 class AuthApi {
   constructor ({ url, headers }) {
     this._url = url;
@@ -51,6 +49,11 @@ class AuthApi {
   }
 }
 
-const authApi = new AuthApi(CONFIG.authApiConfig);
+const authApi = new AuthApi({
+  url: 'https://api.bladerunner.nomoredomainsmonster.ru',
+  headers: {
+    'Content-Type': 'application/json'
+  }
+})
 
 export default authApi;

@@ -50,18 +50,6 @@ function App() {
     }
   }, []);
 
-  function auth(token) {
-    authApi.getInfo(token)
-      .then(() => {
-        localStorage.setItem('loggedIn', JSON.stringify(true))
-        navigate('/react-mesto-auth')
-        setLoggedIn(true)
-      })
-      .catch(() => {
-        localStorage.setItem('loggedIn', JSON.stringify(false))
-      })
-  };
-  
   useEffect(() => {
     Promise.all([api.getUserData(), api.getInitialCards()])
       .then(([userData, cardsData]) => {
@@ -71,13 +59,25 @@ function App() {
       .catch(err => console.log(err));
   }, []);
 
+  function auth(token) {
+    authApi.getInfo(token)
+      .then(() => {
+        localStorage.setItem('loggedIn', JSON.stringify(true))
+        navigate('/')
+        setLoggedIn(true)
+      })
+      .catch(() => {
+        localStorage.setItem('loggedIn', JSON.stringify(false))
+      })
+  };
+
   function handleRegister({ email, password }) {
     setIsLoading(true)
 
     return authApi.register(email, password)
       .then(() => {
         setStatus({ message: 'Вы успешно зарегистрировались!', status: true })
-        navigate('/react-mesto-auth/sign-in')
+        navigate('/sign-in')
       })
       .catch(() => {
         setStatus({
@@ -101,7 +101,7 @@ function App() {
           setLoggedIn(true)
           localStorage.setItem('jwt', res.token)
           localStorage.setItem('loggedIn', JSON.stringify(true))
-          navigate('/react-mesto-auth')
+          navigate('/')
         }
       })
       .catch(() => {
@@ -155,7 +155,7 @@ function App() {
 
   function handleCardLike(card) {
     const isLiked = card.likes.some(i => i._id === currentUser._id);
-    
+
     api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
         setCards(cards => cards.map(c => (c._id === card._id ? newCard : c)));
     })
@@ -176,7 +176,7 @@ function App() {
     setSelectedCard(card);
     setIsDeleteConfirmPopupOpen(true);
   };
-  
+
   function handleUpdateUser(userData) {
     api.setUserInfo(userData)
       .then(newUserData => setCurrentUser(newUserData))
@@ -232,17 +232,17 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
 
       <Routes>
-          <Route path='/react-mesto-auth/sign-up'
+          <Route path='/sign-up'
             element={
               <Register onRegister={handleRegister} isLoading={isLoading} />
             }
           />
 
-          <Route path='/react-mesto-auth/sign-in'
+          <Route path='/sign-in'
             element={<Login onLogin={handleLogin} isLoading={isLoading} />}
           />
 
-          <Route path='/react-mesto-auth'
+          <Route path='/'
             element={
               <ProtectedRoute loggedIn={loggedIn}>
                 <div ref={refScrollUp}> </div>
@@ -265,17 +265,17 @@ function App() {
           <Route path='*'
             element={
               loggedIn ? (
-                <Navigate to='/react-mesto-auth' />
+                <Navigate to='/' />
               ) : (
-                <Navigate to='/react-mesto-auth/sign-in' />
+                <Navigate to='/sign-in' />
               )
             }
           />
       </Routes>
 
       {loggedIn && <Footer />}
-      
-      <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar}/> 
+
+      <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar}/>
 
       <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser}/>
 

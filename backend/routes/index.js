@@ -14,6 +14,12 @@ const router = Router();
 
 router.use(requestLogger);
 
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
+
 router.post('/signin', userAuthValidate, login);
 router.post('/signup', userAuthValidate, createUser);
 router.use('/users', auth, userRouter);
