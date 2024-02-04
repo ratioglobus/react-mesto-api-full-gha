@@ -1,5 +1,3 @@
-import { CONFIG } from './const';
-
 class Api {
   constructor({ url, headers }) {
     this._url = url;

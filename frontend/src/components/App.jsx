@@ -123,6 +123,7 @@ function App() {
 
   useEffect(() => {
     if (loggedIn) {
+      api.setAuthorizationHeader(localStorage.getItem('jwt'))
       Promise.all([api.getUserData(), api.getInitialCards()])
         .then(([person, cards]) => {
           setCurrentUser(person)
@@ -232,16 +233,14 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
 
       <Routes>
+          <Route path='/sign-in'
+            element={<Login onLogin={handleLogin} isLoading={isLoading} />}
+          />
           <Route path='/sign-up'
             element={
               <Register onRegister={handleRegister} isLoading={isLoading} />
             }
           />
-
-          <Route path='/sign-in'
-            element={<Login onLogin={handleLogin} isLoading={isLoading} />}
-          />
-
           <Route path='/'
             element={
               <ProtectedRoute loggedIn={loggedIn}>
@@ -262,13 +261,10 @@ function App() {
             }
           />
 
-          <Route path='*'
+          <Route
+            path='*'
             element={
-              loggedIn ? (
-                <Navigate to='/' />
-              ) : (
-                <Navigate to='/sign-in' />
-              )
+              loggedIn ? <Navigate to='/' /> : <Navigate to='/sign-in' />
             }
           />
       </Routes>

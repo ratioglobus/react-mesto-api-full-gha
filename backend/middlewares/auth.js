@@ -22,7 +22,7 @@ const auth = (req, res, next) => {
       return next(GeneralErrors.Unauthorized('Срок действия токена истек'));
     }
 
-    return next(error);
+    return new GeneralErrors();
   }
 
   req.user = payload;

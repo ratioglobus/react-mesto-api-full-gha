@@ -3,7 +3,7 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import Card from './Card';
 import Header from './Header';
 
-export default function Main({ cards, onEditProfile, onAddPlace, onEditAvatar, onCardClick, 
+export default function Main({ cards, onEditProfile, onAddPlace, onEditAvatar, onCardClick,
     onCardLike, onCardDelete, email, onLogOut }) {
 
     const { name, about, avatar } = useContext(CurrentUserContext);
@@ -12,7 +12,7 @@ export default function Main({ cards, onEditProfile, onAddPlace, onEditAvatar, o
         <>
         <Header
             email={email}
-            address={'/react-mesto-auth/sign-in'}
+            address={'/sign-in'}
             onClick={onLogOut}
             text={'Выйти'}
         />
@@ -39,9 +39,9 @@ export default function Main({ cards, onEditProfile, onAddPlace, onEditAvatar, o
             <section className='elements__container'>
             <div className='elements'>
                 {cards.map(item => {
-                    return <Card 
-                    key={item._id} 
-                    cardData={item} 
+                    return <Card
+                    key={item._id}
+                    cardData={item}
                     onCardClick={onCardClick}
                     onCardLike={onCardLike}
                     onCardDelete={onCardDelete}/>;

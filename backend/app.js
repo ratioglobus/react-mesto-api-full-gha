@@ -10,9 +10,15 @@ const BASE_URL_DB = 'mongodb://localhost:27017/mestodb';
 
 const app = express();
 
-app.use(cors());
 app.use(helmet());
+app.use(cors());
 app.use(json());
+
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
 
 async function startApp() {
   try {

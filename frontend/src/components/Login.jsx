@@ -2,7 +2,7 @@ import React from 'react';
 import Header from './Header';
 
 export default function Login({ onLogin, isLoading }) {
-  
+
   const [inputData, setInputData] = React.useState({ email: '', password: '' })
 
   function handleChangeEmail(event) {
@@ -20,7 +20,7 @@ export default function Login({ onLogin, isLoading }) {
 
   return (
     <>
-      <Header address={'/react-mesto-auth/sign-up'} text={'Регистрация'} />
+      <Header address={'/sign-up'} text={'Регистрация'} />
       <main className='content'>
         <form
           action='#'
