@@ -16,19 +16,6 @@ const CONFIG = {
   popupConfirmSelector: '.popup-deleteConfirm',
   popupNewAvatarSelector: '.popup-newAvatar',
   profileAvatarSelector: '.profile__avatar-img',
-  apiConfig: {
-    url: 'https://mesto.nomoreparties.co/v1/cohort-74',
-    headers: {
-      authorization: '95644a66-d73f-4c68-b73b-d19d376bbf1f',
-      'Content-Type': 'application/json',
-    }
-  },
-  authApiConfig: {
-    url: 'https://auth.nomoreparties.co',
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  },
 };
 
 export { CONFIG };
