@@ -15,8 +15,8 @@ class AuthApi {
     return fetch(url, option).then(this._getResponse)
   }
 
-  authorize(email, password) {
-    return this._request(`${this._url}/signin`, {
+  register(email, password) {
+    return this._request(`${this._url}/signup`, {
       headers: this._headers,
       method: 'POST',
       body: JSON.stringify({
@@ -26,8 +26,8 @@ class AuthApi {
     })
   }
 
-  register(email, password) {
-    return this._request(`${this._url}/signup`, {
+  authorize(email, password) {
+    return this._request(`${this._url}/signin`, {
       headers: this._headers,
       method: 'POST',
       body: JSON.stringify({
@@ -41,7 +41,6 @@ class AuthApi {
     return this._request(`${this._url}/users/me`, {
       method: 'GET',
       headers: {
-        Accept: 'application/json',
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`
       }

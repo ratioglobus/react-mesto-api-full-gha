@@ -63,8 +63,8 @@ function App() {
     authApi.getInfo(token)
       .then(() => {
         localStorage.setItem('loggedIn', JSON.stringify(true))
-        navigate('/')
         setLoggedIn(true)
+        navigate('/')
       })
       .catch(() => {
         localStorage.setItem('loggedIn', JSON.stringify(false))
