@@ -17,4 +17,4 @@ export default function HandleEscClose(handleClose) {
       document.removeEventListener('keyup', HandleEscClose, false);
     };
   }, [HandleEscClose]);
-};
+}

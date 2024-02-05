@@ -21,5 +21,6 @@ module.exports = {
   rules: {
     'no-underscore-dangle': ['error', { allow: ['_id'] }],
     'import/extensions': ['error', 'ignorePackages'],
+    'import/prefer-default-export': 'off',
   },
 };

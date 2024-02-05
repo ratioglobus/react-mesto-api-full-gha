@@ -15,7 +15,7 @@ const userRouter = Router();
 userRouter.get('/', getUsers);
 userRouter.get('/me', getCurrentUser);
 userRouter.get('/:userId', userIDValidate, getUserById);
-userRouter.patch('/me/avatar', userAvatarValidate, updateAvatarProfile);
 userRouter.patch('/me', userInfoValidate, updateInfoProfile);
+userRouter.patch('/me/avatar', userAvatarValidate, updateAvatarProfile);
 
 export default userRouter;

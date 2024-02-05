@@ -1,4 +1,4 @@
-import { React, useContext } from 'react';
+import { useContext } from 'react';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import Card from './Card';
 import Header from './Header';
@@ -12,7 +12,7 @@ export default function Main({ cards, onEditProfile, onAddPlace, onEditAvatar, o
         <>
         <Header
             email={email}
-            address={'/sign-in'}
+            address={'/signin'}
             onClick={onLogOut}
             text={'Выйти'}
         />

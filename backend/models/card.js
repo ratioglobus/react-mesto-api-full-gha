@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import URLExp from '../utils/const.js';
+import { URLExp } from '../utils/const.js';
 
 const cardScheme = new mongoose.Schema(
   {

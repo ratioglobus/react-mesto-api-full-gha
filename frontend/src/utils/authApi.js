@@ -4,15 +4,16 @@ class AuthApi {
     this._headers = headers;
   }
 
-  _getResponse(res) {
+  _getResponse (res) {
     if (res.ok) {
       return res.json()
     }
+
     return Promise.reject(new Error(`${res.status}`))
   }
 
-  _request(url, option) {
-    return fetch(url, option).then(this._getResponse)
+  _request (url, options) {
+    return fetch(url, options).then(this._getResponse)
   }
 
   register(email, password) {
@@ -41,6 +42,7 @@ class AuthApi {
     return this._request(`${this._url}/users/me`, {
       method: 'GET',
       headers: {
+        Accept: 'application/json',
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`
       }
@@ -49,7 +51,8 @@ class AuthApi {
 }
 
 const authApi = new AuthApi({
-  url: 'https://api.bladerunner.nomoredomainsmonster.ru',
+  // url: 'https://api.bladerunner.nomoredomainsmonster.ru',
+  url: 'http://localhost:3000',
   headers: {
     'Content-Type': 'application/json'
   }

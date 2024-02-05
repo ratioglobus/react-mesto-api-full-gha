@@ -9,20 +9,20 @@ export default function Register ({ onRegister, isLoading }) {
 
   function handleChangeEmail(event) {
     setInputData({ email: event.target.value, password: inputData.password })
-  };
+  }
 
   function handleChangePassword(event) {
     setInputData({ email: inputData.email, password: event.target.value })
-  };
+  }
 
   function handleSubmit(event) {
     event.preventDefault()
     onRegister(inputData)
-  };
+  }
 
   return (
     <>
-      <Header address={'/sign-in'} text={'Войти'} />
+      <Header address={'/signin'} text={'Войти'} />
       <main className='content'>
         <form
           action='#'
@@ -67,7 +67,7 @@ export default function Register ({ onRegister, isLoading }) {
           {isLoading ? 'Регистрация...' : 'Зарегистриваться'}
           </button>
 
-          <Link to='/sign-in' className='form__caption'>
+          <Link to='/signin' className='form__caption'>
             Уже зарегистрированы? Войти
           </Link>
         </form>

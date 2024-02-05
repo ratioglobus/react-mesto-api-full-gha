@@ -5,14 +5,14 @@ class Api {
     this._userUrl = `${this._url}/users/me`;
     this._cards = `${this._url}/cards`;
     this._likesUrl = `${this._url}/cards/likes`;
-  };
+  }
 
   _getResponse(res) {
     if (res.ok) {
       return res.json();
     }
     return Promise.reject(new Error(`${res.status}`));
-  };
+  }
 
   setAuthorizationHeader (jwt) {
     this._headers = {
@@ -21,19 +21,38 @@ class Api {
     }
   }
 
-  getUserData() {
-    return fetch(this._userUrl, {
-      headers: this._headers
-    })
-      .then(this._getResponse);
-  };
-
   getInitialCards() {
     return fetch(this._cards, {
       headers: this._headers,
     })
       .then(this._getResponse);
-  };
+  }
+
+  deleteCard(id) {
+    return fetch(`${this._cards}/${id}`, {
+      headers: this._headers,
+      method: 'DELETE',
+    })
+      .then(this._getResponse);
+  }
+
+  createCard ({ namenewimage, linknewimage }) {
+    return fetch(this._cards, {
+      method: 'POST',
+      headers: this._headers,
+      body: JSON.stringify({
+        name: namenewimage,
+        link: linknewimage
+      })
+    }).then(this._getResponse)
+  }
+
+  getUserData() {
+    return fetch(this._userUrl, {
+      headers: this._headers
+    })
+      .then(this._getResponse);
+  }
 
   setUserInfo({ name, about }) {
     return fetch(`${this._url}/users/me`, {
@@ -66,15 +85,7 @@ class Api {
       })
     })
       .then(this._getResponse);
-  };
-
-  deleteCard(id) {
-    return fetch(`${this._cards}/${id}`, {
-      headers: this._headers,
-      method: 'DELETE',
-    })
-      .then(this._getResponse);
-  };
+  }
 
   changeLikeCardStatus(id, isLiked) {
     const method = isLiked ? 'PUT' : 'DELETE';
@@ -84,14 +95,16 @@ class Api {
       headers: this._headers
     })
       .then(this._getResponse);
-  };
-};
+  }
+}
 
 const api = new Api({
-  url: 'https://api.bladerunner.nomoredomainsmonster.ru',
+  // url: 'https://api.bladerunner.nomoredomainsmonster.ru',
+  url: 'http://localhost:3000',
   headers: {
     'Content-Type': 'application/json'
   }
 })
+
 
 export default api;

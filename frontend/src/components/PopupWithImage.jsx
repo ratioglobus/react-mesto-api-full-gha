@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function PopupWithImage({ isOpen, card, onClose }) {
     return (
       <div className={`popup popup-image popup_background_dark ${isOpen ? 'popup_opened' : ''}`}>

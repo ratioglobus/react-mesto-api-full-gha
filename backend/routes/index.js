@@ -13,12 +13,10 @@ import { requestLogger, errorLogger } from '../middlewares/logData.js';
 const router = Router();
 
 router.use(requestLogger);
-
 router.post('/signin', userAuthValidate, login);
 router.post('/signup', userAuthValidate, createUser);
 router.use('/users', auth, userRouter);
 router.use('/cards', auth, cardRouter);
-
 router.use('*', auth, (req, res, next) => {
   next(GeneralErrors.NotFound('Страница не найдена'));
 });

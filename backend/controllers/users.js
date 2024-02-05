@@ -28,6 +28,30 @@ export const login = async (req, res, next) => {
   }
 };
 
+export const createUser = async (req, res, next) => {
+  try {
+    const newUser = await bcrypt
+      .hash(req.body.password, 10)
+      .then((hash) => User.create({ ...req.body, password: hash }));
+
+    return res.status(StatusCodes.CREATED).send({
+      name: newUser.name,
+      about: newUser.about,
+      avatar: newUser.avatar,
+      _id: newUser._id,
+      email: newUser.email,
+    });
+  } catch (error) {
+    if (error instanceof mongoose.Error.ValidationError) {
+      return next(GeneralErrors.BadRequest('При создании пользователя переданы неверные данные'));
+    }
+    if (error.code === 11000) {
+      return next(GeneralErrors.Conflict('Пользователь уже существует'));
+    }
+    return next(new GeneralErrors());
+  }
+};
+
 export const getUsers = async (req, res, next) => {
   try {
     const users = await User.find({});
@@ -64,32 +88,6 @@ export const getUserById = async (req, res, next) => {
     }
     if (error instanceof mongoose.Error.DocumentNotFoundError) {
       return next(GeneralErrors.NotFound('Такого пользователя не существует'));
-    }
-
-    return next(new GeneralErrors());
-  }
-};
-
-export const createUser = async (req, res, next) => {
-  try {
-    const newUser = await bcrypt
-      .hash(req.body.password, 10)
-      .then((hash) => User.create({ ...req.body, password: hash }));
-
-    return res.status(StatusCodes.CREATED).send({
-      name: newUser.name,
-      about: newUser.about,
-      avatar: newUser.avatar,
-      _id: newUser._id,
-      email: newUser.email,
-    });
-  } catch (error) {
-    if (error instanceof mongoose.Error.ValidationError) {
-      return next(GeneralErrors.BadRequest('При создании пользователя переданы неверные данные'));
-    }
-
-    if (error.code === 11000) {
-      return next(GeneralErrors.Conflict('Пользователь уже существует'));
     }
 
     return next(new GeneralErrors());

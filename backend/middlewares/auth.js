@@ -26,7 +26,7 @@ const auth = (req, res, next) => {
       return next(GeneralErrors.Unauthorized('Необходима авторизация'));
     }
 
-    return new GeneralErrors();
+    return next();
   }
   req.user = payload;
   return next();

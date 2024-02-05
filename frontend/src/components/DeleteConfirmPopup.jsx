@@ -1,4 +1,3 @@
-import React from 'react';
 import PopupWithForm from './PopupWithForm';
 
 export default function DeleteConfirmPopup({ isOpen, onClose, onConfirm }) {

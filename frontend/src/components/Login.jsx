@@ -7,20 +7,20 @@ export default function Login({ onLogin, isLoading }) {
 
   function handleChangeEmail(event) {
     setInputData({ email: event.target.value, password: inputData.password })
-  };
+  }
 
   function handleChangePassword(event) {
     setInputData({ email: inputData.email, password: event.target.value })
-  };
+  }
 
   function handleSubmit(event) {
     event.preventDefault()
     onLogin(inputData)
-  };
+  }
 
   return (
     <>
-      <Header address={'/sign-up'} text={'Регистрация'} />
+      <Header address={'/signup'} text={'Регистрация'} />
       <main className='content'>
         <form
           action='#'

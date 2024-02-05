@@ -11,7 +11,7 @@ export default function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
     onAddPlace({ namenewimage, linknewimage });
     setName("");
     setLink("");
-  };
+  }
 
   return (
     <PopupWithForm
