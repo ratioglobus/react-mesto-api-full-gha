@@ -99,8 +99,7 @@ class Api {
 }
 
 const api = new Api({
-  // url: 'https://api.bladerunner.nomoredomainsmonster.ru',
-  url: 'http://localhost:3000',
+  url: 'https://api.bladerunner.nomoredomainsmonster.ru',
   headers: {
     'Content-Type': 'application/json'
   }
