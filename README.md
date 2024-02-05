@@ -7,8 +7,8 @@
 
 ## Ссылки на проект
 
-IP-адрес: 62.84.127.187
+IP 62.84.127.187
 
-Frontend: https://bladerunner.nomoredomainsmonster.ru/
+Frontend https://bladerunner.nomoredomainsmonster.ru/
 
-Backend: https://api.bladerunner.nomoredomainsmonster.ru/
+Backend https://api.bladerunner.nomoredomainsmonster.ru/
