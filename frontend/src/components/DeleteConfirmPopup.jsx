@@ -1,7 +1,11 @@
 import PopupWithForm from './PopupWithForm';
 
-export default function DeleteConfirmPopup({ isOpen, onClose, onConfirm }) {
+export default function DeleteConfirmPopup({ isOpen, onClose, onDelete }) {
 
+  function handleSubmit (e) {
+    e.preventDefault()
+    onDelete()
+  }
   return (
     <PopupWithForm
         title='Вы уверены?'
@@ -9,7 +13,8 @@ export default function DeleteConfirmPopup({ isOpen, onClose, onConfirm }) {
         buttonText='Да'
         isOpen={isOpen}
         onClose={onClose}
-        onSubmit={onConfirm}
+        // onSubmit={onConfirm}
+        onSubmit={handleSubmit}
     ></PopupWithForm>
   );
 }

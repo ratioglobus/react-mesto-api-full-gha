@@ -4,7 +4,6 @@ class Api {
     this._headers = headers;
     this._userUrl = `${this._url}/users/me`;
     this._cards = `${this._url}/cards`;
-    this._likesUrl = `${this._url}/cards/likes`;
   }
 
   _getResponse(res) {
@@ -87,14 +86,18 @@ class Api {
       .then(this._getResponse);
   }
 
-  changeLikeCardStatus(id, isLiked) {
-    const method = isLiked ? 'PUT' : 'DELETE';
+  likeCard(id) {
+    return fetch(`${this._cards}/${id}/likes`, {
+      headers: this._headers,
+      method: 'PUT'
+    }).then(this._getResponse)
+  }
 
-    return fetch(`${this._likesUrl}/${id}`, {
-      method,
-      headers: this._headers
-    })
-      .then(this._getResponse);
+  dislikeCard(id) {
+    return fetch(`${this._cards}/${id}/likes`, {
+      headers: this._headers,
+      method: 'DELETE'
+    }).then(this._getResponse)
   }
 }
 

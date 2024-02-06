@@ -62,15 +62,6 @@ function App() {
       })
   }
 
-  useEffect(() => {
-    Promise.all([api.getUserData(), api.getInitialCards()])
-      .then(([userData, cardsData]) => {
-        setCurrentUser(userData);
-        setCards(cardsData);
-      })
-      .catch(err => console.log(err));
-  }, []);
-
   function handleLogin({ email, password }) {
     localStorage.setItem('email', email)
     setIsLoading(true)
@@ -153,23 +144,44 @@ function App() {
     refScrollUp.current.scrollIntoView({ behavior: "smooth" });
   };
 
-  function handleCardLike(card) {
-    const isLiked = card.likes.some(i => i._id === currentUser._id);
-
-    api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
-        setCards(cards => cards.map(c => (c._id === card._id ? newCard : c)));
-    })
-    .catch(err => console.error(err));
+  function handleCardLike (card) {
+    const isLiked = card.likes.some(i => i === currentUser._id)
+    if (isLiked) {
+      api
+        .dislikeCard(card._id)
+        .then(newCard => {
+          setCards(state => state.map(c => (c._id === card._id ? newCard : c)))
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    } else {
+      api
+        .likeCard(card._id)
+        .then(newCard => {
+          setCards(state => state.map(c => (c._id === card._id ? newCard : c)))
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    }
   }
 
-  function handleCardDelete(event) {
-    event.preventDefault();
-
-    api.deleteCard(selectedCard._id).then(res => {
-        setCards(cards => cards.filter(c => c._id !== selectedCard._id))
-        setIsDeleteConfirmPopupOpen(false);
+  function handleCardDelete() {
+    setIsLoading(true)
+    const id = selectedCard._id
+    api
+      .deleteCard(id)
+      .then(() => {
+        setCards(cards => cards.filter(c => c._id !== id))
+        closeAllPopups()
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        console.log(err)
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
   }
 
   function handleCardDeleteClick(card) {
@@ -249,8 +261,8 @@ function App() {
                   onEditProfile={handleEditProfileClick}
                   onAddPlace={handleAddPlaceClick}
                   onCardClick={handleCardClick}
-                  onCardLike={handleCardLike}
-                  onCardDelete={handleCardDeleteClick}
+                  onCardLikeClick={handleCardLike}
+                  onDelete={handleCardDeleteClick}
                   cards={cards}
                   onLogOut={onLogOut}
                   email={localStorage.getItem('email')}
@@ -276,7 +288,7 @@ function App() {
 
       <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlace}/>
 
-      <DeleteConfirmPopup isOpen={isDeleteConfirmPopupOpen} onClose={closeAllPopups} onConfirm={handleCardDelete}/>
+      <DeleteConfirmPopup isOpen={isDeleteConfirmPopupOpen} onClose={closeAllPopups} onDelete={handleCardDelete}/>
 
       <PopupWithImage isOpen={isImagePopupOpen} onClose={closeAllPopups} card={selectedCard}/>
 

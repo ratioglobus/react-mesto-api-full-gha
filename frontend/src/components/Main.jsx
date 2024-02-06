@@ -4,7 +4,7 @@ import Card from './Card';
 import Header from './Header';
 
 export default function Main({ cards, onEditProfile, onAddPlace, onEditAvatar, onCardClick,
-    onCardLike, onCardDelete, email, onLogOut }) {
+    onCardLikeClick, onDelete, email, onLogOut }) {
 
     const { name, about, avatar } = useContext(CurrentUserContext);
 
@@ -38,14 +38,15 @@ export default function Main({ cards, onEditProfile, onAddPlace, onEditAvatar, o
 
             <section className='elements__container'>
             <div className='elements'>
-                {cards.map(item => {
-                    return <Card
-                    key={item._id}
-                    cardData={item}
-                    onCardClick={onCardClick}
-                    onCardLike={onCardLike}
-                    onCardDelete={onCardDelete}/>;
-                })}
+            {cards.map(item => (
+              <Card
+                item={item}
+                onDeleteClick={onDelete}
+                onCardClick={onCardClick}
+                onCardLikeClick={onCardLikeClick}
+                key={item._id}
+              />
+            ))}{' '}
                 </div>
             </section>
         </main>

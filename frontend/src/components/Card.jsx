@@ -1,35 +1,46 @@
-import { useContext } from 'react';
+import React from 'react'
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
-export default function Card({ cardData, onCardClick, onCardLike, onCardDelete }) {
+export default function Card({ item, onCardClick, onCardLikeClick, onDeleteClick }) {
 
     function handleClick() {
-        onCardClick(cardData);
+        onCardClick(item);
     }
 
-    const { _id: currentUserId } = useContext(CurrentUserContext);
-    const { name, likes, link, owner } = cardData;
+    function handleLikeClick () {
+      onCardLikeClick(item)
+    }
 
-    const isLiked = likes.some(like => like._id === currentUserId);
-    const isOwn = owner._id === currentUserId;
+    function handleDeleteClick () {
+      onDeleteClick(item);
+    }
+
+    const currentUser = React.useContext(CurrentUserContext)
+    const isOwn = item.owner === currentUser._id
+    const isLiked = item.likes.some(i => i === currentUser._id)
+    const cardLikeButtonClassName =
+    `elements__like-button ${
+      isLiked && 'elements__like-button_active'
+    }`
 
     return (
         <section className="elements">
           <div className="elements__item">
-            <img src={link} alt={name} className='elements__photo' onClick={handleClick} />
+            <img src={item.link} alt={item.name} className='elements__photo' onClick={handleClick} />
             <div className="elements__content">
-              <h2 className="elements__place">{name}</h2>
+              <h2 className="elements__place">{item.name}</h2>
               <div className="elements__likes">
                 <button
                   type="button"
-                  className={`elements__like-button ${isLiked && 'elements__like-button_active'}`}
-                  onClick={() => onCardLike(cardData)}>
-                </button>
-                <p className="elements__likes-count">{likes.length}</p>
+                  // className={`elements__like-button ${isLiked && 'elements__like-button_active'}`}
+                  className={cardLikeButtonClassName}
+                  onClick={handleLikeClick}
+                />
+                <p className="elements__likes-count">{item.likes.length}</p>
               </div>
             </div>
             {isOwn && (
-              <button type='button' className='elements__delete' onClick={() => onCardDelete(cardData)}></button>
+              <button type='button' className='elements__delete' onClick={handleDeleteClick}></button>
             )}
           </div>
       </section>

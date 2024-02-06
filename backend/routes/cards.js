@@ -13,8 +13,8 @@ const cardRouter = Router();
 
 cardRouter.get('/', getCards);
 cardRouter.post('/', cardInfoValidate, createCard);
+cardRouter.delete('/:cardId', cardIDValidate, deleteCard);
 cardRouter.put('/:cardId/likes', cardIDValidate, likeCard);
 cardRouter.delete('/:cardId/likes', cardIDValidate, dislikeCard);
-cardRouter.delete('/:cardId', cardIDValidate, deleteCard);
 
 export default cardRouter;

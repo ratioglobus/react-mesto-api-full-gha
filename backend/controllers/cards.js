@@ -19,7 +19,7 @@ export const createCard = async (req, res, next) => {
     return res.status(StatusCodes.CREATED).send(await newCard.save());
   } catch (error) {
     if (error instanceof mongoose.Error.ValidationError) {
-      return next(GeneralErrors.BadRequest('При создании карточки переданы некорректные данные'));
+      return next(GeneralErrors.BadRequest('Переданы неверные данные'));
     }
     return next(new GeneralErrors());
   }
