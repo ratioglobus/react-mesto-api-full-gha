@@ -8,7 +8,7 @@ export const getCards = async (req, res, next) => {
     const cards = await Card.find({});
     return res.send(cards);
   } catch (error) {
-    return next(new GeneralErrors());
+    return next(error);
   }
 };
 
@@ -19,9 +19,9 @@ export const createCard = async (req, res, next) => {
     return res.status(StatusCodes.CREATED).send(await newCard.save());
   } catch (error) {
     if (error instanceof mongoose.Error.ValidationError) {
-      return next(GeneralErrors.BadRequest('Переданы неверные данные'));
+      return next(GeneralErrors('Переданы некорректные данные при создании карточки', StatusCodes.BAD_REQUEST));
     }
-    return next(new GeneralErrors());
+    return next(error);
   }
 };
 
@@ -35,12 +35,12 @@ export const likeCard = async (req, res, next) => {
     return res.send(card);
   } catch (error) {
     if (error instanceof mongoose.Error.CastError) {
-      return next(GeneralErrors.BadRequest('При создании карточки переданы некорректные данные'));
+      return next(GeneralErrors(`Передан несуществующий ID ${req.params.cardId} карточки`, StatusCodes.NOT_FOUND));
     }
     if (error instanceof mongoose.Error.DocumentNotFoundError) {
-      return next(GeneralErrors.NotFound('Такая карточка не найдена'));
+      return next(GeneralErrors('Переданы некорректные данные для увеличения счетчика лайков', StatusCodes.BAD_REQUEST));
     }
-    return next(new GeneralErrors());
+    return next(error);
   }
 };
 
@@ -54,12 +54,12 @@ export const dislikeCard = async (req, res, next) => {
     return res.send(card);
   } catch (error) {
     if (error instanceof mongoose.Error.CastError) {
-      return next(GeneralErrors.BadRequest('При создании карточки переданы некорректные данные'));
+      return next(GeneralErrors('Переданы некорректные данные для уменьшения счетчика лайков', StatusCodes.BAD_REQUEST));
     }
     if (error instanceof mongoose.Error.DocumentNotFoundError) {
-      return next(GeneralErrors.NotFound('Такая карточка не найдена'));
+      return next(GeneralErrors(`Передан несуществующий ID ${req.params.cardId} карточки`, StatusCodes.NOT_FOUND));
     }
-    return next(new GeneralErrors());
+    return next(error);
   }
 };
 
@@ -67,7 +67,7 @@ export const deleteCard = async (req, res, next) => {
   try {
     const card = await Card.findById(req.params.cardId).orFail();
     if (card.owner.toString() !== req.user._id) {
-      return next(GeneralErrors.Forbidden('Вы не можете удалять карточки других пользователей'));
+      return next(GeneralErrors('Нельзя удалять карточки других пользователей', StatusCodes.FORBIDDEN));
     }
     return Card.deleteOne(card)
       .orFail()
@@ -75,12 +75,9 @@ export const deleteCard = async (req, res, next) => {
         res.send({ message: 'Карточка удалена' });
       });
   } catch (error) {
-    if (error instanceof mongoose.Error.CastError) {
-      return next(GeneralErrors.BadRequest('При создании карточки переданы некорректные данные'));
-    }
     if (error instanceof mongoose.Error.DocumentNotFoundError) {
-      return next(GeneralErrors.NotFound('Такая карточка не найдена'));
+      return next(GeneralErrors('Карточка с указанным ID не найдена', StatusCodes.NOT_FOUND));
     }
-    return next(new GeneralErrors());
+    return next(error);
   }
 };

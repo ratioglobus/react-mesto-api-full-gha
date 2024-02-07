@@ -1,3 +1,4 @@
+import { StatusCodes } from 'http-status-codes';
 import Jwt from 'jsonwebtoken';
 import GeneralErrors from '../utils/GeneralErrors.js';
 
@@ -9,24 +10,20 @@ const auth = (req, res, next) => {
     const token = req.headers.authorization;
 
     if (!token) {
-      throw new Error('NeedsAutanticate');
+      return next(GeneralErrors('Необходима авторизация', StatusCodes.UNAUTHORIZED));
     }
     const validToken = token.replace('Bearer ', '');
     payload = Jwt.verify(validToken, NODE_ENV ? JWT_SECRET : 'very-secret-token');
   } catch (error) {
     if (error.name === 'JsonWebTokenError') {
-      return next(GeneralErrors.Unauthorized('С токеном что-то не так'));
+      return next(GeneralErrors('С токеном что-то не так', StatusCodes.UNAUTHORIZED));
     }
 
     if (error.name === 'TokenExpiredError') {
-      return next(GeneralErrors.Unauthorized('Срок действия токена истек'));
+      return next(GeneralErrors('Срок действия токена истек', StatusCodes.UNAUTHORIZED));
     }
 
-    if (error.message === 'NeedsAutanticate') {
-      return next(GeneralErrors.Unauthorized('Необходима авторизация'));
-    }
-
-    return next();
+    return next(error);
   }
   req.user = payload;
   return next();
