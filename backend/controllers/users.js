@@ -11,7 +11,7 @@ export const login = async (req, res, next) => {
     const user = await User.findOne({ email })
       .select('+password')
       .orFail(() => {
-        throw new GeneralErrors.Unauthorized('Введены неправильная почта или пароль')
+        throw new GeneralErrors.Unauthorized('Введены неправильная почта или пароль');
       });
     const matched = await bcrypt.compare(String(password), user.password);
     if (!matched) {
