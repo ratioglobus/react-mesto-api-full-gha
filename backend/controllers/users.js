@@ -64,7 +64,7 @@ export const getCurrentUser = async (req, res, next) => {
     return res.status(StatusCodes.OK).send(user);
   } catch (error) {
     if (error instanceof mongoose.Error.DocumentNotFoundError) {
-      return next(GeneralErrors(`Пользователь по указанному ID ${req.params.id} не найден`, StatusCodes.NOT_FOUND));
+      return next(new GeneralErrors(`Пользователь по указанному ID ${req.params.id} не найден`, StatusCodes.NOT_FOUND));
     }
     return next(error);
   }
@@ -77,10 +77,10 @@ export const getUserById = async (req, res, next) => {
     return res.status(StatusCodes.OK).send(user);
   } catch (error) {
     if (error instanceof mongoose.Error.CastError) {
-      return next(GeneralErrors('Передан невалидный ID', StatusCodes.BAD_REQUEST));
+      return next(new GeneralErrors('Передан невалидный ID', StatusCodes.BAD_REQUEST));
     }
     if (error instanceof mongoose.Error.DocumentNotFoundError) {
-      return next(GeneralErrors(`Пользователь по указанному ID ${req.params.id} не найден`, StatusCodes.NOT_FOUND));
+      return next(new GeneralErrors(`Пользователь по указанному ID ${req.params.id} не найден`, StatusCodes.NOT_FOUND));
     }
     return next(error);
   }
@@ -97,10 +97,10 @@ export const updateAvatarProfile = async (req, res, next) => {
     return res.json(updatedInfo);
   } catch (error) {
     if (error instanceof mongoose.Error.ValidationError) {
-      return next(GeneralErrors.BadRequest('Переданы неверные данные'));
+      return next(new GeneralErrors.BadRequest('Переданы неверные данные'));
     }
     if (error instanceof mongoose.Error.DocumentNotFoundError) {
-      return next(GeneralErrors.NotFound('Такого пользователя не существует'));
+      return next(new GeneralErrors.NotFound('Такого пользователя не существует'));
     }
     return next(error);
   }
@@ -117,10 +117,10 @@ export const updateInfoProfile = async (req, res, next) => {
     return res.json(updatedInfo);
   } catch (error) {
     if (error instanceof mongoose.Error.ValidationError) {
-      return next(GeneralErrors('Переданы некорректные данные при создании пользователя', StatusCodes.BAD_REQUEST));
+      return next(new GeneralErrors('Переданы некорректные данные при создании пользователя', StatusCodes.BAD_REQUEST));
     }
     if (error instanceof mongoose.Error.DocumentNotFoundError) {
-      return next(GeneralErrors(`Пользователь по указанному ID ${req.user._id} не найден`, StatusCodes.NOT_FOUND));
+      return next(new GeneralErrors(`Пользователь по указанному ID ${req.user._id} не найден`, StatusCodes.NOT_FOUND));
     }
     return next(error);
   }
