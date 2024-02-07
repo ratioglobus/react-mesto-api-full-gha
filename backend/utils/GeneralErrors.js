@@ -2,9 +2,8 @@ import { StatusCodes } from 'http-status-codes';
 
 export default class GeneralErrors extends Error {
   constructor(status, message) {
-    super();
+    super(message);
     this.status = status;
-    this.message = message;
   }
 
   static BadRequest(message) {
