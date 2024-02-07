@@ -35,10 +35,10 @@ export const likeCard = async (req, res, next) => {
     return res.send(card);
   } catch (error) {
     if (error instanceof mongoose.Error.CastError) {
-      return next(GeneralErrors.NotFound(`Передан несуществующий ID ${req.params.cardId} карточки`));
+      return next(GeneralErrors.BadRequest('Переданы некорректные данные для увеличения счетчика лайков'));
     }
     if (error instanceof mongoose.Error.DocumentNotFoundError) {
-      return next(GeneralErrors.BadRequest('Переданы некорректные данные для увеличения счетчика лайков'));
+      return next(GeneralErrors.NotFound(`Передан несуществующий ID ${req.params.cardId} карточки`));
     }
     return next(error);
   }
@@ -67,7 +67,7 @@ export const deleteCard = async (req, res, next) => {
   try {
     const card = await Card.findById(req.params.cardId).orFail();
     if (card.owner.toString() !== req.user._id) {
-      return next(GeneralErrors('Нельзя удалять карточки других пользователей', StatusCodes.FORBIDDEN));
+      return next(GeneralErrors.Forbidden('Нельзя удалять карточки других пользователей'));
     }
     return Card.deleteOne(card)
       .orFail()
