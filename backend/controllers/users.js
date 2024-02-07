@@ -10,16 +10,18 @@ export const login = async (req, res, next) => {
   try {
     const user = await User.findOne({ email })
       .select('+password')
-      .orFail();
+      .orFail(() => {
+        throw new GeneralErrors.Unauthorized('Введены неправильная почта или пароль')
+      });
     const matched = await bcrypt.compare(String(password), user.password);
     if (!matched) {
-      return next(new GeneralErrors('Введены неправильные почта или пароль', StatusCodes.UNAUTHORIZED));
+      throw new GeneralErrors.Unauthorized('Введены неправильная почта или пароль');
     }
     const token = generateToken({ _id: user._id });
     return res.send({ token });
   } catch (error) {
     if (error.message === 'NotAutanticate') {
-      return next(new GeneralErrors('Введены неправильные почта или пароль', StatusCodes.UNAUTHORIZED));
+      return next(GeneralErrors.Unauthorized('Введены неправильная почта или пароль'));
     }
     return next(error);
   }
@@ -40,10 +42,10 @@ export const createUser = async (req, res, next) => {
     });
   } catch (error) {
     if (error instanceof mongoose.Error.ValidationError) {
-      return next(new GeneralErrors('При создании пользователя переданы неверные данные', StatusCodes.BAD_REQUEST));
+      return next(new GeneralErrors.BadRequest('Введены неправильная почта или пароль'));
     }
     if (error.code === 11000) {
-      return next(new GeneralErrors('Пользователь с таким адресом электронной почты уже существует', StatusCodes.CONFLICT));
+      return next(new GeneralErrors.Conflict('Пользователь с таким адресом электронной почты уже существует'));
     }
     return next(error);
   }
@@ -64,7 +66,7 @@ export const getCurrentUser = async (req, res, next) => {
     return res.status(StatusCodes.OK).send(user);
   } catch (error) {
     if (error instanceof mongoose.Error.DocumentNotFoundError) {
-      return next(new GeneralErrors(`Пользователь по указанному ID ${req.params.id} не найден`, StatusCodes.NOT_FOUND));
+      return next(new GeneralErrors.NotFound(`Пользователь по указанному ID ${req.params.id} не найден`));
     }
     return next(error);
   }
@@ -77,10 +79,10 @@ export const getUserById = async (req, res, next) => {
     return res.status(StatusCodes.OK).send(user);
   } catch (error) {
     if (error instanceof mongoose.Error.CastError) {
-      return next(new GeneralErrors('Передан невалидный ID', StatusCodes.BAD_REQUEST));
+      return next(new GeneralErrors.BadRequest('Передан невалидный ID'));
     }
     if (error instanceof mongoose.Error.DocumentNotFoundError) {
-      return next(new GeneralErrors(`Пользователь по указанному ID ${req.params.id} не найден`, StatusCodes.NOT_FOUND));
+      return next(new GeneralErrors.NotFound(`Пользователь по указанному ID ${req.params.id} не найден`));
     }
     return next(error);
   }
@@ -117,10 +119,10 @@ export const updateInfoProfile = async (req, res, next) => {
     return res.json(updatedInfo);
   } catch (error) {
     if (error instanceof mongoose.Error.ValidationError) {
-      return next(new GeneralErrors('Переданы некорректные данные при создании пользователя', StatusCodes.BAD_REQUEST));
+      return next(new GeneralErrors.BadRequest('Переданы некорректные данные при создании пользователя'));
     }
     if (error instanceof mongoose.Error.DocumentNotFoundError) {
-      return next(new GeneralErrors(`Пользователь по указанному ID ${req.user._id} не найден`, StatusCodes.NOT_FOUND));
+      return next(new GeneralErrors.NotFound(`Пользователь по указанному ID ${req.user._id} не найден`));
     }
     return next(error);
   }

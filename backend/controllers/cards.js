@@ -19,7 +19,7 @@ export const createCard = async (req, res, next) => {
     return res.status(StatusCodes.CREATED).send(await newCard.save());
   } catch (error) {
     if (error instanceof mongoose.Error.ValidationError) {
-      return next(GeneralErrors('Переданы некорректные данные при создании карточки', StatusCodes.BAD_REQUEST));
+      return next(GeneralErrors.BadRequest('Переданы некорректные данные при создании карточки'));
     }
     return next(error);
   }
@@ -35,10 +35,10 @@ export const likeCard = async (req, res, next) => {
     return res.send(card);
   } catch (error) {
     if (error instanceof mongoose.Error.CastError) {
-      return next(GeneralErrors(`Передан несуществующий ID ${req.params.cardId} карточки`, StatusCodes.NOT_FOUND));
+      return next(GeneralErrors.NotFound(`Передан несуществующий ID ${req.params.cardId} карточки`));
     }
     if (error instanceof mongoose.Error.DocumentNotFoundError) {
-      return next(GeneralErrors('Переданы некорректные данные для увеличения счетчика лайков', StatusCodes.BAD_REQUEST));
+      return next(GeneralErrors.BadRequest('Переданы некорректные данные для увеличения счетчика лайков'));
     }
     return next(error);
   }
@@ -54,10 +54,10 @@ export const dislikeCard = async (req, res, next) => {
     return res.send(card);
   } catch (error) {
     if (error instanceof mongoose.Error.CastError) {
-      return next(GeneralErrors('Переданы некорректные данные для уменьшения счетчика лайков', StatusCodes.BAD_REQUEST));
+      return next(GeneralErrors.BadRequest('Переданы некорректные данные для уменьшения счетчика лайков'));
     }
     if (error instanceof mongoose.Error.DocumentNotFoundError) {
-      return next(GeneralErrors(`Передан несуществующий ID ${req.params.cardId} карточки`, StatusCodes.NOT_FOUND));
+      return next(GeneralErrors.NotFound(`Передан несуществующий ID ${req.params.cardId} карточки`));
     }
     return next(error);
   }
@@ -76,7 +76,7 @@ export const deleteCard = async (req, res, next) => {
       });
   } catch (error) {
     if (error instanceof mongoose.Error.DocumentNotFoundError) {
-      return next(GeneralErrors('Карточка с указанным ID не найдена', StatusCodes.NOT_FOUND));
+      return next(GeneralErrors.NotFound('Карточка с указанным ID не найдена'));
     }
     return next(error);
   }
