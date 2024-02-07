@@ -40,10 +40,10 @@ export const createUser = async (req, res, next) => {
     });
   } catch (error) {
     if (error instanceof mongoose.Error.ValidationError) {
-      return next(GeneralErrors('При создании пользователя переданы неверные данные', StatusCodes.BAD_REQUEST));
+      return next(new GeneralErrors('При создании пользователя переданы неверные данные', StatusCodes.BAD_REQUEST));
     }
     if (error.code === 11000) {
-      return next(GeneralErrors('Пользователь с таким адресом электронной почты уже существует', StatusCodes.CONFLICT));
+      return next(new GeneralErrors('Пользователь с таким адресом электронной почты уже существует', StatusCodes.CONFLICT));
     }
     return next(error);
   }
