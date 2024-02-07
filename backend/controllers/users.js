@@ -10,9 +10,7 @@ export const login = async (req, res, next) => {
   try {
     const user = await User.findOne({ email })
       .select('+password')
-      .orFail(() => {
-        return next(GeneralErrors.Unauthorized('Введены неправильная почта или пароль'));
-      });
+      .orFail(() => next(GeneralErrors.Unauthorized('Введены неправильная почта или пароль')));
     const matched = await bcrypt.compare(String(password), user.password);
     if (!matched) {
       return next(GeneralErrors.Unauthorized('Введены неправильная почта или пароль'));
