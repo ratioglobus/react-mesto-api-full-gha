@@ -45,7 +45,7 @@ export const createUser = async (req, res, next) => {
       return next(new GeneralErrors.BadRequest('Введены неправильная почта или пароль'));
     }
     if (error.code === 11000) {
-      return next(new GeneralErrors.Conflict('Пользователь с таким адресом электронной почты уже существует'));
+      return next(GeneralErrors.Conflict('Пользователь с таким адресом электронной почты уже существует'));
     }
     return next(error);
   }
